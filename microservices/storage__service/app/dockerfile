@@ -1,0 +1,11 @@
+# Dockerfile (Node.js)
+FROM node:20
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY storage_service.js .
+
+CMD ["node", "storage_service.js"]

@@ -1,0 +1,76 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microservices Demo</title>
+</head>
+<body>
+    <h1>Microservices Demo</h1>
+    
+    <section>
+        <h2>Authenticate</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button onclick="authenticate()">Login</button>
+        <p id="auth-result"></p>
+    </section>
+    
+    <section>
+        <h2>Store Data</h2>
+        <input type="text" id="data" placeholder="Data to store">
+        <button onclick="storeData()">Store</button>
+        <p id="storage-result"></p>
+    </section>
+    
+    <section>
+        <h2>Send Notification</h2>
+        <input type="text" id="notification" placeholder="Notification message">
+        <button onclick="sendNotification()">Notify</button>
+        <p id="notify-result"></p>
+    </section>
+
+    <script>
+        async function authenticate() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const response = await fetch('http://localhost:5000/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+            document.getElementById('auth-result').innerText = JSON.stringify(result);
+        }
+
+        async function storeData() {
+            const data = document.getElementById('data').value;
+
+            const response = await fetch('http://localhost:5001/store', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ data })
+            });
+
+            const result = await response.json();
+            document.getElementById('storage-result').innerText = JSON.stringify(result);
+        }
+
+        async function sendNotification() {
+            const message = document.getElementById('notification').value;
+
+            const response = await fetch('http://localhost:5002/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message })
+            });
+
+            const result = await response.json();
+            document.getElementById('notify-result').innerText = JSON.stringify(result);
+        }
+    </script>
+</body>
+</html>
